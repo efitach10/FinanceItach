@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>היסטוריה - Home Finance</title>
+  <link href="css/tailwind.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+
+  <!-- Navigation Bottom -->
+  <nav class="fixed bottom-0 w-full bg-gray-800 border-t border-gray-700 flex justify-around py-2">
+    <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-blue-500">דשבורד</a>
+    <a href="transactions.html" class="flex flex-col items-center text-gray-400 hover:text-blue-500">תנועות</a>
+    <a href="history.html" class="flex flex-col items-center text-blue-500">היסטוריה</a>
+    <a href="goals.html" class="flex flex-col items-center text-gray-400 hover:text-blue-500">יעדים</a>
+    <a href="settings.html" class="flex flex-col items-center text-gray-400 hover:text-blue-500">הגדרות</a>
+  </nav>
+
+  <main class="flex-1 p-4 pt-6 mb-16">
+    <h1 class="text-2xl font-bold mb-4">היסטוריה</h1>
+
+    <!-- Search -->
+    <input id="historySearch" type="text" placeholder="חיפוש..." class="w-full p-2 mb-4 rounded bg-gray-800 text-gray-100 focus:outline-none">
+
+    <!-- History Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-700">
+        <thead>
+          <tr>
+            <th class="px-4 py-2 text-left text-gray-400">קטגוריה</th>
+            <th class="px-4 py-2 text-left text-gray-400">סכום</th>
+            <th class="px-4 py-2 text-left text-gray-400">תיאור</th>
+            <th class="px-4 py-2 text-left text-gray-400">תאריך</th>
+          </tr>
+        </thead>
+        <tbody id="historyTable" class="divide-y divide-gray-700">
+          <!-- תנועות ייכנסו כאן דרך JS -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/history.js"></script>
+</body>
+</html>
