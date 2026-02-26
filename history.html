@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>History</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-gray-100 pb-20">
+
+<div class="p-4">
+
+<h1 class="text-xl font-bold mb-4">היסטוריה</h1>
+
+<input type="month" id="monthFilter"
+class="w-full mb-3 p-2 border rounded">
+
+<input type="text" id="searchInput"
+placeholder="חיפוש..."
+class="w-full mb-4 p-2 border rounded">
+
+<div id="historyList" class="space-y-3"></div>
+
+</div>
+
+<div class="bottom-nav">
+<a href="index.html">🏠</a>
+<a href="transactions.html">💸</a>
+<a href="history.html">📜</a>
+<a href="goals.html">🎯</a>
+<a href="settings.html">⚙️</a>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/history.js"></script>
+</body>
+</html>
