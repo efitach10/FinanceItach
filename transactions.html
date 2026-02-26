@@ -12,25 +12,47 @@
   <script src="js/transactions.js" defer></script>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
-  <header class="p-4 text-center text-2xl font-bold">תנועות</header>
-  <main class="flex-1 p-4 space-y-4">
-    <div class="flex justify-around mb-4">
-      <button id="tabRecurring" class="btn-primary">קבועות</button>
-      <button id="tabOneTime" class="btn-primary">לא קבועות</button>
+  <header class="p-4 text-center text-3xl font-bold">תנועות</header>
+  <main class="flex-1 p-6 space-y-6">
+    <!-- Tabs -->
+    <div class="flex justify-around mb-6">
+      <button id="tabRecurring" class="btn-primary">תנועות קבועות</button>
+      <button id="tabOneTime" class="btn-primary">תנועות לא קבועות</button>
     </div>
-    <div id="recurringSection" class="space-y-2">
-      <!-- טופס והצגת תנועות קבועות -->
+
+    <!-- קבועות -->
+    <div id="recurringSection" class="space-y-4">
+      <!-- כרטיסי תנועות קבועות יוצגו כאן -->
     </div>
-    <div id="oneTimeSection" class="space-y-2 hidden">
-      <!-- טופס והצגת תנועות לא קבועות -->
+
+    <!-- לא קבועות -->
+    <div id="oneTimeSection" class="space-y-4 hidden">
+      <!-- כרטיסי תנועות לא קבועות יוצגו כאן -->
     </div>
   </main>
-  <nav class="bg-gray-800 p-2 fixed bottom-0 w-full flex justify-around">
-    <a href="index.html" class="text-gray-100">דשבורד</a>
-    <a href="transactions.html" class="text-blue-500">תנועות</a>
-    <a href="history.html" class="text-gray-100">היסטוריה</a>
-    <a href="goals.html" class="text-gray-100">יעדים</a>
-    <a href="settings.html" class="text-gray-100">הגדרות</a>
+
+  <!-- ניווט תחתון -->
+  <nav class="bg-gray-900 p-4 fixed bottom-0 w-full flex justify-around items-center shadow-inner">
+    <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-blue-400 transition">
+      <span class="material-icons">dashboard</span>
+      <span class="text-xs mt-1">דשבורד</span>
+    </a>
+    <a href="transactions.html" class="flex flex-col items-center text-blue-400">
+      <span class="material-icons">receipt_long</span>
+      <span class="text-xs mt-1">תנועות</span>
+    </a>
+    <a href="history.html" class="flex flex-col items-center text-gray-400 hover:text-blue-400 transition">
+      <span class="material-icons">history</span>
+      <span class="text-xs mt-1">היסטוריה</span>
+    </a>
+    <a href="goals.html" class="flex flex-col items-center text-gray-400 hover:text-blue-400 transition">
+      <span class="material-icons">emoji_events</span>
+      <span class="text-xs mt-1">יעדים</span>
+    </a>
+    <a href="settings.html" class="flex flex-col items-center text-gray-400 hover:text-blue-400 transition">
+      <span class="material-icons">settings</span>
+      <span class="text-xs mt-1">הגדרות</span>
+    </a>
   </nav>
 </body>
 </html>
