@@ -1,36 +1,30 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="he" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>הגדרות - Home Finance</title>
+  <title>הגדרות</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/config.js" defer></script>
+  <script src="js/state.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/settings.js" defer></script>
 </head>
-<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
-
-  <!-- Navigation Bottom -->
-  <nav class="fixed bottom-0 w-full bg-gray-800 border-t border-gray-700 flex justify-around py-2">
-    <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-blue-500">דשבורד</a>
-    <a href="transactions.html" class="flex flex-col items-center text-gray-400 hover:text-blue-500">תנועות</a>
-    <a href="history.html" class="flex flex-col items-center text-gray-400 hover:text-blue-500">היסטוריה</a>
-    <a href="goals.html" class="flex flex-col items-center text-gray-400 hover:text-blue-500">יעדים</a>
-    <a href="settings.html" class="flex flex-col items-center text-blue-500">הגדרות</a>
-  </nav>
-
-  <main class="flex-1 p-4 pt-6 mb-16">
-    <h1 class="text-2xl font-bold mb-4">הגדרות וקטגוריות</h1>
-
-    <button id="addCategoryBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mb-4">+ הוסף קטגוריה</button>
-
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+  <header class="p-4 text-center text-2xl font-bold">הגדרות</header>
+  <main class="flex-1 p-4 space-y-4">
     <div id="categoriesList" class="space-y-2">
       <!-- רשימת קטגוריות -->
     </div>
+    <button id="addCategoryBtn" class="btn-primary">הוסף קטגוריה</button>
   </main>
-
-  <script src="js/config.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/settings.js"></script>
+  <nav class="bg-gray-800 p-2 fixed bottom-0 w-full flex justify-around">
+    <a href="index.html" class="text-gray-100">דשבורד</a>
+    <a href="transactions.html" class="text-gray-100">תנועות</a>
+    <a href="history.html" class="text-gray-100">היסטוריה</a>
+    <a href="goals.html" class="text-gray-100">יעדים</a>
+    <a href="settings.html" class="text-blue-500">הגדרות</a>
+  </nav>
 </body>
-
 </html>
