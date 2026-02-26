@@ -7,158 +7,213 @@
 
 <style>
 :root {
-    --bg: #0f172a;
-    --card: #1e293b;
-    --soft: #334155;
-    --text: #f1f5f9;
-    --muted: #94a3b8;
-    --accent: #f59e0b;   /* זהב חמים */
-    --positive: #10b981;
-    --negative: #ef4444;
-    --shadow: 0 10px 30px rgba(0,0,0,0.4);
+    --bg:#0f172a;
+    --card:#1e293b;
+    --soft:#334155;
+    --text:#f1f5f9;
+    --muted:#94a3b8;
+    --accent:#f59e0b;
+    --positive:#10b981;
+    --negative:#ef4444;
+    --shadow:0 10px 30px rgba(0,0,0,0.4);
 }
 
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);
+    color:var(--text);
 }
 
 /* ===== HEADER ===== */
 
-header {
-    background: linear-gradient(135deg, #111827, #1e293b);
-    padding: 30px 20px 40px;
-    border-bottom: 1px solid #1f2937;
+header{
+    padding:35px 20px;
+    text-align:center;
+    border-bottom:1px solid #1f2937;
 }
 
-.brand {
-    display: flex;
-    justify-content: center; /* מרכז אופקית */
-    align-items: center;
+.logo{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    direction:ltr;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-direction: row-reverse;
+.logo-icon{
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    background:var(--accent);
+    color:#111;
+    font-weight:bold;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
-.logo-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: var(--accent);
-    color: #111;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.logo-text{
+    text-align:left;
 }
 
-.logo-text {
-    font-size: 18px;
-    font-weight: 600;
-    text-align: left;
-    direction: ltr; /* חשוב מאוד לטקסט באנגלית */
+.logo-text span{
+    display:block;
+    font-size:13px;
+    color:var(--muted);
 }
 
-.logo-text span {
-    display: block;
-    font-size: 13px;
-    color: var(--muted);
+/* ===== MONTH PICKER ===== */
+
+.month-container{
+    margin-top:25px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
 }
 
-/* ===== MONTH SELECTOR ===== */
-
-.month-selector {
-    margin-top: 25px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+.month-btn{
+    background:var(--card);
+    border:1px solid var(--soft);
+    color:var(--text);
+    padding:6px 14px;
+    border-radius:8px;
+    cursor:pointer;
 }
 
-.month-selector button {
-    background: var(--card);
-    color: var(--text);
-    border: 1px solid var(--soft);
-    padding: 6px 14px;
-    border-radius: 8px;
-    cursor: pointer;
+.month-display{
+    font-size:16px;
+    cursor:pointer;
+}
+
+.month-popup{
+    display:none;
+    position:fixed;
+    bottom:80px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--card);
+    padding:20px;
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    z-index:10;
+}
+
+.month-popup select{
+    background:var(--soft);
+    border:none;
+    padding:8px;
+    color:white;
+    border-radius:8px;
 }
 
 /* ===== DASHBOARD ===== */
 
-.dashboard {
-    padding: 30px 20px 120px;
-    display: grid;
-    gap: 20px;
+.dashboard{
+    padding:30px 20px 160px;
+    display:grid;
+    gap:20px;
+    grid-template-columns:1fr 1fr;
 }
 
-.card {
-    background: var(--card);
-    border-radius: 16px;
-    padding: 22px;
-    box-shadow: var(--shadow);
-    border: 1px solid #263244;
-    transition: 0.2s ease;
+.card{
+    background:var(--card);
+    border-radius:16px;
+    padding:22px;
+    box-shadow:var(--shadow);
+    border:1px solid #263244;
+    cursor:pointer;
+    transition:all 0.3s ease;
+    position:relative;
+    overflow:hidden;
 }
 
-.card:hover {
-    transform: translateY(-4px);
-    border-color: var(--accent);
+.card.expanded{
+    grid-column:1/-1; /* תופס את כל הרוחב */
 }
 
-.card h3 {
-    margin: 0;
-    font-size: 14px;
-    color: var(--muted);
+.card h3{
+    margin:0;
+    font-size:14px;
+    color:var(--muted);
 }
 
-.amount {
-    margin-top: 14px;
-    font-size: 28px;
-    font-weight: 600;
+.amount{
+    margin-top:12px;
+    font-size:26px;
+    font-weight:600;
 }
 
-.expenses .amount { color: var(--negative); }
-.income .amount { color: var(--positive); }
-.goals .amount { color: #a78bfa; }
-.savings .amount { color: var(--accent); }
-.over .amount { color: #fb923c; }
-
-/* ===== FOOTER ===== */
-
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #111827;
-    border-top: 1px solid #1f2937;
-    display: flex;
-    justify-content: space-around;
-    padding: 14px 0;
-    font-size: 12px;
+.detail{
+    margin-top:12px;
+    font-size:13px;
+    color:var(--text);
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.3s ease;
 }
 
-footer a {
-    text-decoration: none;
-    color: var(--muted);
+.card.expanded .detail{
+    max-height:300px;
 }
 
-/* ===== RESPONSIVE ===== */
+/* צבעים */
+.expenses .amount{ color:var(--negative); }
+.income .amount{ color:var(--positive); }
+.savings .amount{ color:var(--accent); }
+.over .amount{ color:#fb923c; }
 
-@media(min-width: 768px) {
-    .dashboard {
-        grid-template-columns: repeat(2, 1fr);
-    }
+/* ===== ALERT CARD ===== */
+
+.alert-card{
+    grid-column:1/-1;
+    background:var(--card);
+    border-radius:16px;
+    padding:20px;
+    box-shadow:var(--shadow);
+    border:1px solid #263244;
+    color:var(--accent);
+    text-align:center;
+    font-weight:600;
 }
 
-@media(min-width: 1200px) {
-    .dashboard {
-        grid-template-columns: repeat(3, 1fr);
+/* ===== BOTTOM NAV ===== */
+
+footer{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#111827;
+    border-top:1px solid #1f2937;
+    display:flex;
+    justify-content:space-around;
+    padding:10px 0;
+    font-size:12px;
+}
+
+footer a{
+    text-decoration:none;
+    color:var(--muted);
+    font-size:11px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+}
+
+footer a.active{
+    color:var(--accent);
+}
+
+footer span{
+    font-size:18px;
+}
+
+/* responsive */
+@media(min-width:768px){
+    .dashboard{
+        grid-template-columns:repeat(2,1fr);
     }
 }
 </style>
@@ -167,61 +222,128 @@ footer a {
 <body>
 
 <header>
-    <div class="brand">
-        <div class="logo">
-            <div class="logo-icon">IHF</div>
-            <div class="logo-text">
-                Itach Home Finance
-                <span>Premium Budget Management</span>
-            </div>
-        </div>
-    </div>
 
-    <div class="month-selector">
-        <button>◀</button>
-        <span>יוני 2026</span>
-        <button>▶</button>
+<div class="logo">
+    <div class="logo-icon">IHF</div>
+    <div class="logo-text">
+        Itach Home Finance
+        <span>Premium Budget Management</span>
     </div>
+</div>
+
+<div class="month-container">
+    <button class="month-btn" onclick="changeMonth(-1)">▶</button>
+    <div class="month-display" onclick="togglePopup()" id="monthText"></div>
+    <button class="month-btn" onclick="changeMonth(1)">◀</button>
+</div>
+
 </header>
+
+<div class="month-popup" id="monthPopup">
+    <select onchange="selectMonth(this.value)" id="monthSelect"></select>
+</div>
 
 <section class="dashboard">
 
-    <div class="card expenses">
+    <div class="card expenses" onclick="toggleCard(this)">
         <h3>הוצאות</h3>
         <div class="amount">₪ 8,450</div>
+        <div class="detail">
+            <p>שכירות: ₪ 3,000</p>
+            <p>חשמל ומים: ₪ 1,200</p>
+            <p>קניות: ₪ 2,500</p>
+            <p>תחבורה: ₪ 1,750</p>
+        </div>
     </div>
 
-    <div class="card income">
+    <div class="card income" onclick="toggleCard(this)">
         <h3>הכנסות</h3>
         <div class="amount">₪ 12,000</div>
+        <div class="detail">
+            <p>משכורת: ₪ 10,000</p>
+            <p>פרויקטים חיצוניים: ₪ 2,000</p>
+        </div>
     </div>
 
-    <div class="card goals">
-        <h3>יעדים</h3>
-        <div class="amount">₪ 2,000</div>
-    </div>
-
-    <div class="card savings">
-        <h3>חסכון אפשרי החודש</h3>
+    <div class="card savings" onclick="toggleCard(this)">
+        <h3>חסכון אפשרי</h3>
         <div class="amount">₪ 3,550</div>
+        <div class="detail">
+            <p>חסכון חודשי: ₪ 2,000</p>
+            <p>קרן חירום: ₪ 1,550</p>
+        </div>
     </div>
 
-    <div class="card over">
+    <div class="card over" onclick="toggleCard(this)">
         <h3>חריגות</h3>
         <div class="amount">₪ 650</div>
+        <div class="detail">
+            <p>קניות מיותרות: ₪ 400</p>
+            <p>מסעדות: ₪ 250</p>
+        </div>
+    </div>
+
+    <div class="alert-card">
+        ⚠️ אתה מתקרב לחריגות בתקציב! חיסכון יעד: ₪ 2,000
     </div>
 
 </section>
 
 <footer>
-    <a href="#">תנועות קבועות</a>
-    <a href="#">תנועות לא קבועות</a>
-    <a href="#">תקציבים</a>
-    <a href="#">יעדים</a>
-    <a href="#">חסכונות</a>
-    <a href="#">היסטוריה</a>
-    <a href="#">הגדרות</a>
+    <a href="#" class="active"><span>💳</span> תנועות</a>
+    <a href="#"><span>📊</span> תקציבים</a>
+    <a href="#"><span>💰</span> חסכונות</a>
+    <a href="#"><span>📈</span> היסטוריה</a>
+    <a href="#"><span>⚙️</span> הגדרות</a>
 </footer>
+
+<script>
+const months=["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
+let current=new Date().getMonth();
+
+function renderMonth(){
+    document.getElementById("monthText").innerText=months[current]+" "+new Date().getFullYear();
+    document.getElementById("monthSelect").value=current;
+}
+
+function changeMonth(step){
+    current+=step;
+    if(current<0) current=11;
+    if(current>11) current=0;
+    renderMonth();
+}
+
+function togglePopup(){
+    const popup=document.getElementById("monthPopup");
+    popup.style.display=popup.style.display==="block"?"none":"block";
+}
+
+function selectMonth(val){
+    current=parseInt(val);
+    renderMonth();
+    togglePopup();
+}
+
+function init(){
+    const select=document.getElementById("monthSelect");
+    months.forEach((m,i)=>{
+        const option=document.createElement("option");
+        option.value=i;
+        option.text=m;
+        select.appendChild(option);
+    });
+    renderMonth();
+}
+
+init();
+
+/* ===== expand cards ===== */
+function toggleCard(card){
+    const expanded=document.querySelector(".card.expanded");
+    if(expanded && expanded!==card) expanded.classList.remove("expanded");
+    card.classList.toggle("expanded");
+}
+</script>
 
 </body>
 </html>
