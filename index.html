@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Itach Home Finance</title>
+
+<style>
+:root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --soft: #334155;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --accent: #f59e0b;   /* זהב חמים */
+    --positive: #10b981;
+    --negative: #ef4444;
+    --shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ===== HEADER ===== */
+
+header {
+    background: linear-gradient(135deg, #111827, #1e293b);
+    padding: 30px 20px 40px;
+    border-bottom: 1px solid #1f2937;
+}
+
+.brand {
+    display: flex;
+    justify-content: center; /* מרכז אופקית */
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-direction: row-reverse;
+}
+
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--accent);
+    color: #111;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: left;
+    direction: ltr; /* חשוב מאוד לטקסט באנגלית */
+}
+
+.logo-text span {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* ===== MONTH SELECTOR ===== */
+
+.month-selector {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.month-selector button {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--soft);
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ===== DASHBOARD ===== */
+
+.dashboard {
+    padding: 30px 20px 120px;
+    display: grid;
+    gap: 20px;
+}
+
+.card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+    border: 1px solid #263244;
+    transition: 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.amount {
+    margin-top: 14px;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.expenses .amount { color: var(--negative); }
+.income .amount { color: var(--positive); }
+.goals .amount { color: #a78bfa; }
+.savings .amount { color: var(--accent); }
+.over .amount { color: #fb923c; }
+
+/* ===== FOOTER ===== */
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #111827;
+    border-top: 1px solid #1f2937;
+    display: flex;
+    justify-content: space-around;
+    padding: 14px 0;
+    font-size: 12px;
+}
+
+footer a {
+    text-decoration: none;
+    color: var(--muted);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(min-width: 768px) {
+    .dashboard {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(min-width: 1200px) {
+    .dashboard {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">
+        <div class="logo">
+            <div class="logo-icon">IHF</div>
+            <div class="logo-text">
+                Itach Home Finance
+                <span>Premium Budget Management</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="month-selector">
+        <button>◀</button>
+        <span>יוני 2026</span>
+        <button>▶</button>
+    </div>
+</header>
+
+<section class="dashboard">
+
+    <div class="card expenses">
+        <h3>הוצאות</h3>
+        <div class="amount">₪ 8,450</div>
+    </div>
+
+    <div class="card income">
+        <h3>הכנסות</h3>
+        <div class="amount">₪ 12,000</div>
+    </div>
+
+    <div class="card goals">
+        <h3>יעדים</h3>
+        <div class="amount">₪ 2,000</div>
+    </div>
+
+    <div class="card savings">
+        <h3>חסכון אפשרי החודש</h3>
+        <div class="amount">₪ 3,550</div>
+    </div>
+
+    <div class="card over">
+        <h3>חריגות</h3>
+        <div class="amount">₪ 650</div>
+    </div>
+
+</section>
+
+<footer>
+    <a href="#">תנועות קבועות</a>
+    <a href="#">תנועות לא קבועות</a>
+    <a href="#">תקציבים</a>
+    <a href="#">יעדים</a>
+    <a href="#">חסכונות</a>
+    <a href="#">היסטוריה</a>
+    <a href="#">הגדרות</a>
+</footer>
+
+</body>
+</html>
