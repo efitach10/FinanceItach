@@ -25,8 +25,6 @@ body{
     color:var(--text);
 }
 
-/* ===== HEADER ===== */
-
 header{
     padding:35px 20px;
     text-align:center;
@@ -62,8 +60,6 @@ header{
     font-size:13px;
     color:var(--muted);
 }
-
-/* ===== MONTH PICKER ===== */
 
 .month-container{
     margin-top:25px;
@@ -108,8 +104,6 @@ header{
     border-radius:8px;
 }
 
-/* ===== DASHBOARD ===== */
-
 .dashboard{
     padding:30px 20px 160px;
     display:grid;
@@ -130,7 +124,7 @@ header{
 }
 
 .card.expanded{
-    grid-column:1/-1; /* תופס את כל הרוחב */
+    grid-column:1/-1;
 }
 
 .card h3{
@@ -145,6 +139,7 @@ header{
     font-weight:600;
 }
 
+/* detail area ready for dynamic data */
 .detail{
     margin-top:12px;
     font-size:13px;
@@ -157,12 +152,6 @@ header{
 .card.expanded .detail{
     max-height:300px;
 }
-
-/* צבעים */
-.expenses .amount{ color:var(--negative); }
-.income .amount{ color:var(--positive); }
-.savings .amount{ color:var(--accent); }
-.over .amount{ color:#fb923c; }
 
 /* ===== ALERT CARD ===== */
 
@@ -210,7 +199,6 @@ footer span{
     font-size:18px;
 }
 
-/* responsive */
 @media(min-width:768px){
     .dashboard{
         grid-template-columns:repeat(2,1fr);
@@ -245,46 +233,34 @@ footer span{
 
 <section class="dashboard">
 
+    <!-- כרטיסים ריקים מוכנים לנתונים דינמיים -->
     <div class="card expenses" onclick="toggleCard(this)">
         <h3>הוצאות</h3>
-        <div class="amount">₪ 8,450</div>
-        <div class="detail">
-            <p>שכירות: ₪ 3,000</p>
-            <p>חשמל ומים: ₪ 1,200</p>
-            <p>קניות: ₪ 2,500</p>
-            <p>תחבורה: ₪ 1,750</p>
-        </div>
+        <div class="amount" id="expensesAmount">₪ --</div>
+        <div class="detail" id="expensesDetail"></div>
     </div>
 
     <div class="card income" onclick="toggleCard(this)">
         <h3>הכנסות</h3>
-        <div class="amount">₪ 12,000</div>
-        <div class="detail">
-            <p>משכורת: ₪ 10,000</p>
-            <p>פרויקטים חיצוניים: ₪ 2,000</p>
-        </div>
+        <div class="amount" id="incomeAmount">₪ --</div>
+        <div class="detail" id="incomeDetail"></div>
     </div>
 
     <div class="card savings" onclick="toggleCard(this)">
         <h3>חסכון אפשרי</h3>
-        <div class="amount">₪ 3,550</div>
-        <div class="detail">
-            <p>חסכון חודשי: ₪ 2,000</p>
-            <p>קרן חירום: ₪ 1,550</p>
-        </div>
+        <div class="amount" id="savingsAmount">₪ --</div>
+        <div class="detail" id="savingsDetail"></div>
     </div>
 
     <div class="card over" onclick="toggleCard(this)">
         <h3>חריגות</h3>
-        <div class="amount">₪ 650</div>
-        <div class="detail">
-            <p>קניות מיותרות: ₪ 400</p>
-            <p>מסעדות: ₪ 250</p>
-        </div>
+        <div class="amount" id="overAmount">₪ --</div>
+        <div class="detail" id="overDetail"></div>
     </div>
 
-    <div class="alert-card">
-        ⚠️ אתה מתקרב לחריגות בתקציב! חיסכון יעד: ₪ 2,000
+    <!-- כרטיס התראה דינמי -->
+    <div class="alert-card" id="alertCard">
+        ⚠️ המידע החודשי יופיע כאן
     </div>
 
 </section>
@@ -337,11 +313,20 @@ function init(){
 
 init();
 
-/* ===== expand cards ===== */
 function toggleCard(card){
     const expanded=document.querySelector(".card.expanded");
     if(expanded && expanded!==card) expanded.classList.remove("expanded");
     card.classList.toggle("expanded");
+}
+
+/* פונקציות JS לעדכון דינמי בעתיד */
+function updateCard(type, amount, details){
+    document.getElementById(type+"Amount").innerText="₪ "+amount;
+    document.getElementById(type+"Detail").innerHTML=details.map(d=>`<p>${d}</p>`).join("");
+}
+
+function updateAlert(message){
+    document.getElementById("alertCard").innerText=message;
 }
 </script>
 
