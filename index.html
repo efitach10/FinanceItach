@@ -1,69 +1,36 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="he" class="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Finance App</title>
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Finance - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/config.js" defer></script>
+  <script src="js/state.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/financeEngine.js" defer></script>
+  <script src="js/dashboard.js" defer></script>
 </head>
-
-<body class="bg-gray-100 pb-20">
-
-<div class="p-4">
-
-    <!-- Month Selector -->
-    <div class="flex justify-between items-center mb-4">
-        <button onclick="changeMonth(-1)">◀</button>
-        <h1 id="currentMonth" class="text-xl font-bold"></h1>
-        <button onclick="changeMonth(1)">▶</button>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+  <header class="p-4 text-center text-2xl font-bold">דשבורד הבית</header>
+  <main class="flex-1 p-4 space-y-4">
+    <div class="grid grid-cols-3 gap-4 text-center">
+      <div class="card"><p>הכנסות</p><p id="income">0 ₪</p></div>
+      <div class="card"><p>הוצאות</p><p id="expenses">0 ₪</p></div>
+      <div class="card"><p>חיסכון</p><p id="savings">0 ₪</p></div>
     </div>
-
-    <!-- KPI -->
-    <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="card">
-            <p>הכנסות</p>
-            <h2 id="incomeTotal"></h2>
-        </div>
-        <div class="card">
-            <p>הוצאות</p>
-            <h2 id="expenseTotal"></h2>
-        </div>
-        <div class="card">
-            <p>יתרה</p>
-            <h2 id="balance"></h2>
-        </div>
-        <div class="card">
-            <p>תחזית סוף חודש</p>
-            <h2 id="forecast"></h2>
-        </div>
+    <div class="chart-container">
+      <canvas id="dashboardChart"></canvas>
     </div>
-
-    <!-- Chart -->
-    <div class="card">
-        <canvas id="categoryChart"></canvas>
-    </div>
-
-    <!-- Budget Alerts -->
-    <div id="budgetAlerts" class="mt-4"></div>
-
-</div>
-
-<!-- Bottom Nav -->
-<div class="bottom-nav">
-    <a href="index.html">🏠</a>
-    <a href="transactions.html">💸</a>
-    <a href="history.html">📜</a>
-    <a href="goals.html">🎯</a>
-    <a href="settings.html">⚙️</a>
-</div>
-
-<script src="js/config.js"></script>
-<script src="js/api.js"></script>
-<script src="js/state.js"></script>
-<script src="js/financeEngine.js"></script>
-<script src="js/dashboard.js"></script>
+  </main>
+  <nav class="bg-gray-800 p-2 fixed bottom-0 w-full flex justify-around">
+    <a href="index.html" class="text-blue-500">דשבורד</a>
+    <a href="transactions.html" class="text-gray-100">תנועות</a>
+    <a href="history.html" class="text-gray-100">היסטוריה</a>
+    <a href="goals.html" class="text-gray-100">יעדים</a>
+    <a href="settings.html" class="text-gray-100">הגדרות</a>
+  </nav>
 </body>
-
 </html>
