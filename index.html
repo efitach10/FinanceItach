@@ -6,7 +6,7 @@
   <title>Home Finance - Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
   <script src="js/config.js" defer></script>
   <script src="js/state.js" defer></script>
   <script src="js/api.js" defer></script>
@@ -14,23 +14,52 @@
   <script src="js/dashboard.js" defer></script>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
-  <header class="p-4 text-center text-2xl font-bold">דשבורד הבית</header>
-  <main class="flex-1 p-4 space-y-4">
-    <div class="grid grid-cols-3 gap-4 text-center">
-      <div class="card"><p>הכנסות</p><p id="income">0 ₪</p></div>
-      <div class="card"><p>הוצאות</p><p id="expenses">0 ₪</p></div>
-      <div class="card"><p>חיסכון</p><p id="savings">0 ₪</p></div>
+  <header class="p-4 text-center text-3xl font-bold">דשבורד הבית</header>
+  <main class="flex-1 p-6 space-y-6">
+    <!-- כרטיסי סיכום -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="bg-gradient-to-r from-green-400 to-green-600 text-white p-6 rounded-xl shadow-lg transition transform hover:scale-105">
+        <p class="text-sm font-semibold">הכנסות</p>
+        <p class="text-2xl font-bold mt-2" id="income">0 ₪</p>
+      </div>
+      <div class="bg-gradient-to-r from-red-400 to-red-600 text-white p-6 rounded-xl shadow-lg transition transform hover:scale-105">
+        <p class="text-sm font-semibold">הוצאות</p>
+        <p class="text-2xl font-bold mt-2" id="expenses">0 ₪</p>
+      </div>
+      <div class="bg-gradient-to-r from-blue-400 to-blue-600 text-white p-6 rounded-xl shadow-lg transition transform hover:scale-105">
+        <p class="text-sm font-semibold">חיסכון</p>
+        <p class="text-2xl font-bold mt-2" id="savings">0 ₪</p>
+      </div>
     </div>
-    <div class="chart-container">
+
+    <!-- גרף חודשי -->
+    <div class="bg-gray-800 p-4 rounded-xl shadow-lg">
       <canvas id="dashboardChart"></canvas>
     </div>
   </main>
-  <nav class="bg-gray-800 p-2 fixed bottom-0 w-full flex justify-around">
-    <a href="index.html" class="text-blue-500">דשבורד</a>
-    <a href="transactions.html" class="text-gray-100">תנועות</a>
-    <a href="history.html" class="text-gray-100">היסטוריה</a>
-    <a href="goals.html" class="text-gray-100">יעדים</a>
-    <a href="settings.html" class="text-gray-100">הגדרות</a>
+
+  <!-- ניווט תחתון מודרני -->
+  <nav class="bg-gray-900 p-4 fixed bottom-0 w-full flex justify-around items-center shadow-inner">
+    <a href="index.html" class="flex flex-col items-center text-blue-400">
+      <span class="material-icons">dashboard</span>
+      <span class="text-xs mt-1">דשבורד</span>
+    </a>
+    <a href="transactions.html" class="flex flex-col items-center text-gray-400 hover:text-blue-400 transition">
+      <span class="material-icons">receipt_long</span>
+      <span class="text-xs mt-1">תנועות</span>
+    </a>
+    <a href="history.html" class="flex flex-col items-center text-gray-400 hover:text-blue-400 transition">
+      <span class="material-icons">history</span>
+      <span class="text-xs mt-1">היסטוריה</span>
+    </a>
+    <a href="goals.html" class="flex flex-col items-center text-gray-400 hover:text-blue-400 transition">
+      <span class="material-icons">emoji_events</span>
+      <span class="text-xs mt-1">יעדים</span>
+    </a>
+    <a href="settings.html" class="flex flex-col items-center text-gray-400 hover:text-blue-400 transition">
+      <span class="material-icons">settings</span>
+      <span class="text-xs mt-1">הגדרות</span>
+    </a>
   </nav>
 </body>
 </html>
