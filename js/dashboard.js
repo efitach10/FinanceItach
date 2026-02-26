@@ -2,14 +2,13 @@ async function updateDashboard() {
   const data = await apiCall("getTransactions");
   State.recurringTransactions = data.recurring || [];
   State.oneTimeTransactions = data.oneTime || [];
-  
+
   const totals = calculateMonthlyTotals([...State.recurringTransactions, ...State.oneTimeTransactions]);
-  
+
   document.getElementById("income").innerText = `${totals.income} ₪`;
   document.getElementById("expenses").innerText = `${totals.expense} ₪`;
   document.getElementById("savings").innerText = `${totals.savings} ₪`;
 
-  // גרף Chart.js
   const ctx = document.getElementById("dashboardChart").getContext("2d");
   new Chart(ctx, {
     type: "bar",
@@ -25,5 +24,4 @@ async function updateDashboard() {
   });
 }
 
-// אתחול
 updateDashboard();
