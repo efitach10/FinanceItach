@@ -11,7 +11,7 @@ async function updateDashboard() {
 
   const ctx = document.getElementById("dashboardChart").getContext("2d");
   new Chart(ctx, {
-    type: "bar",
+    type: "doughnut",
     data: {
       labels: ["הכנסות","הוצאות","חיסכון"],
       datasets: [{
@@ -20,7 +20,7 @@ async function updateDashboard() {
         backgroundColor: ["#22C55E","#EF4444","#3B82F6"]
       }]
     },
-    options: { responsive:true, plugins:{ legend:{ display:false } } }
+    options: { responsive:true, plugins:{ legend:{ position: 'bottom' } } }
   });
 }
 
