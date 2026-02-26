@@ -1,50 +1,35 @@
-const goalsList = document.getElementById("goalsList");
-const addGoalBtn = document.getElementById("addGoalBtn");
-let goals = [];
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadGoals();
+});
 
-async function fetchGoals() {
-  try {
-    const res = await fetch(CONFIG.API_URL + '?action=getGoals', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ secret: CONFIG.SECRET })
-    });
-    goals = await res.json() || [];
-    renderGoals();
-  } catch (err) {
-    console.error("Error fetching goals:", err);
-  }
+async function loadGoals() {
+  const data = await apiCall("getGoals");
+  State.goals = data.goals || [];
+  renderGoals();
 }
 
 function renderGoals() {
-  goalsList.innerHTML = '';
-  goals.forEach(goal => {
-    const div = document.createElement("div");
-    div.className = "bg-gray-800 p-4 rounded-lg shadow-md";
-    const progress = Math.min((goal.current / goal.target) * 100, 100);
-    div.innerHTML = `
-      <h2 class="font-bold">${goal.name}</h2>
-      <p class="text-gray-400">${goal.current} ₪ מתוך ${goal.target} ₪</p>
-      <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
-        <div class="bg-green-400 h-2 rounded-full" style="width:${progress}%"></div>
+  const container = document.getElementById("goalsList");
+  container.innerHTML = "";
+
+  State.goals.forEach(goal => {
+    const progress = Math.min(100, Math.round((goal.saved / goal.target) * 100));
+    const card = document.createElement("div");
+    card.className = "card p-4 space-y-2";
+    card.innerHTML = `
+      <p class="font-semibold">${goal.name}</p>
+      <p class="text-sm text-gray-300">יעד: ${goal.target} ₪ | חסכון נוכחי: ${goal.saved} ₪</p>
+      <div class="w-full bg-gray-700 rounded-full h-3">
+        <div class="bg-blue-500 h-3 rounded-full transition-all" style="width: ${progress}%"></div>
       </div>
+      <p class="text-xs text-gray-400">${progress}% הושלם</p>
     `;
-    goalsList.appendChild(div);
+    container.appendChild(card);
   });
 }
 
-addGoalBtn.addEventListener("click", async () => {
-  const name = prompt("שם יעד:");
-  const target = prompt("סכום יעד:");
-  if (!name || !target) return;
-  const goal = { name, target: parseFloat(target), current: 0 };
-  await fetch(CONFIG.API_URL + '?action=addGoal', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ secret: CONFIG.SECRET, goal })
-  });
-  fetchGoals();
-});
-
-// אתחול
-fetchGoals();
+// הוספת יעד חדש
+async function addGoal(goal) {
+  const result = await apiCall("addGoal", { goal });
+  if(result.success) loadGoals();
+}
