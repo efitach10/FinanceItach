@@ -3,354 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Itach Home Finance - חסכונות</title>
-
+<title>חסכונות</title>
 <style>
-:root {
-    --bg:#0f172a;
-    --card:#1e293b;
-    --soft:#334155;
-    --text:#f1f5f9;
-    --muted:#94a3b8;
-    --accent:#f59e0b;
-    --positive:#10b981;
-    --negative:#ef4444;
-    --shadow:0 10px 30px rgba(0,0,0,0.4);
-}
-
-body{
-    margin:0;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-}
-
-header{
-    padding:35px 20px;
-    text-align:center;
-    border-bottom:1px solid #1f2937;
-}
-
-.logo{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:12px;
-    direction:ltr;
-    cursor:pointer;
-}
-
-.logo-icon{
-    width:44px;
-    height:44px;
-    border-radius:12px;
-    background:var(--accent);
-    color:#111;
-    font-weight:bold;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.logo-text{
-    text-align:left;
-}
-
-.logo-text span{
-    display:block;
-    font-size:13px;
-    color:var(--muted);
-}
-
-/* ===== TABS ===== */
-.tabs{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    margin-top:20px;
-}
-
-.tab-btn{
-    padding:8px 20px;
-    border-radius:12px;
-    border:1px solid var(--soft);
-    background:var(--card);
-    color:var(--text);
-    cursor:pointer;
-    font-weight:600;
-}
-
-.tab-btn.active{
-    border-color:var(--accent);
-    color:var(--accent);
-}
-
-/* ===== FORM CARDS ===== */
-.form-card{
-    background:var(--card);
-    border-radius:16px;
-    padding:22px;
-    margin:20px;
-    box-shadow:var(--shadow);
-    border:1px solid #263244;
-}
-
-.form-card label{
-    display:block;
-    margin:10px 0 4px;
-    font-size:13px;
-    color:var(--muted);
-}
-
-.form-card input{
-    width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:none;
-    background:var(--soft);
-    color:white;
-    margin-bottom:10px;
-}
-
-.form-card button{
-    background:var(--accent);
-    color:#111;
-    border:none;
-    padding:10px 16px;
-    border-radius:12px;
-    cursor:pointer;
-    font-weight:600;
-    margin-top:10px;
-}
-
-.form-card button:hover{
-    opacity:0.9;
-}
-
-/* ===== SAVINGS LIST ===== */
-.savings-list{
-    margin:20px;
-}
-
-.saving-item{
-    background:var(--soft);
-    border-radius:12px;
-    padding:14px 12px;
-    margin-bottom:12px;
-    box-shadow:var(--shadow);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.saving-item div{
-    display:flex;
-    flex-direction:column;
-}
-
-.progress-bar{
-    width:100%;
-    height:12px;
-    background:#334155;
-    border-radius:6px;
-    overflow:hidden;
-    margin-top:4px;
-}
-
-.progress-bar-inner{
-    height:100%;
-    background:var(--positive);
-    width:0%;
-    border-radius:6px;
-    transition: width 0.3s ease;
-}
-
-/* ===== MODAL ===== */
-#editModal{
-    display:none;
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:rgba(0,0,0,0.6);
-    justify-content:center; align-items:center;
-    z-index:1000;
-}
-
-#editModal .modal-content{
-    background:var(--card);
-    padding:20px;
-    border-radius:12px;
-    width:300px;
-    text-align:center;
-    box-shadow:var(--shadow);
-}
-
-/* ===== BOTTOM NAV ===== */
-footer{
-    position:fixed;
-    bottom:0;
-    width:100%;
-    background:#111827;
-    border-top:1px solid #1f2937;
-    display:flex;
-    justify-content:space-around;
-    padding:10px 0;
-    font-size:12px;
-}
-
-footer a{
-    text-decoration:none;
-    color:var(--muted);
-    font-size:11px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:4px;
-}
-
-footer a.active{
-    color:var(--accent);
-}
-
-footer span{
-    font-size:18px;
-}
+body{margin:0;font-family:sans-serif;background:#0f172a;color:#fff}
+.card{background:#1e293b;margin:20px;padding:20px;border-radius:14px}
+input{width:100%;padding:8px;margin:5px 0;border-radius:8px;border:none}
+button{padding:10px;background:#f59e0b;border:none;border-radius:10px;margin-top:10px}
+footer{position:fixed;bottom:0;width:100%;background:#111827;display:flex;justify-content:space-around;padding:10px 0}
+footer a{color:#94a3b8;text-decoration:none;font-size:12px;text-align:center}
+footer a.active{color:#f59e0b}
 </style>
 </head>
 <body>
 
-<header>
-<div class="logo" onclick="goToDashboard()">
-    <div class="logo-icon">IHF</div>
-    <div class="logo-text">
-        Itach Home Finance
-        <span>Premium Budget Management</span>
-    </div>
-</div>
-</header>
-
-<div class="tabs">
-    <div class="tab-btn active" onclick="showTab('new')">חסכון חדש</div>
-    <div class="tab-btn" onclick="showTab('existing')">חסכון קיים</div>
-</div>
-
-<!-- ===== TAB NEW ===== -->
-<div class="form-card" id="newTab">
-    <label>שם החיסכון</label>
-    <input type="text" id="newName" placeholder="לדוגמה: חופשה">
-
-    <label>סכום התחלתי (₪)</label>
-    <input type="number" id="initialAmount" placeholder="₪">
-
-    <label>סכום יעד (אופציונלי)</label>
-    <input type="number" id="targetAmount" placeholder="₪">
-
-    <label>תאריך יעד (אופציונלי)</label>
-    <input type="month" id="targetDate">
-
-    <button onclick="createSaving()">צור חסכון</button>
-</div>
-
-<!-- ===== TAB EXISTING ===== -->
-<div class="savings-list" id="existingTab" style="display:none"></div>
-
-<!-- ===== MODAL לעריכת סכום ===== -->
-<div id="editModal">
-    <div class="modal-content">
-        <h3>ערוך חסכון</h3>
-        <input type="number" id="editAmount" placeholder="₪">
-        <div style="margin-top:12px;">
-            <button onclick="saveEdit()">שמור</button>
-            <button onclick="closeModal()" style="background:#ef4444; margin-left:8px;">ביטול</button>
-        </div>
-    </div>
+<div class="card">
+<h3>חסכון חדש</h3>
+<input type="text" id="savingName" placeholder="שם החסכון">
+<input type="number" id="target" placeholder="יעד (אופציונלי)">
+<input type="date" id="targetDate">
+<button onclick="createSaving()">צור חסכון</button>
 </div>
 
 <footer>
-    <a href="index.html"><span>🏠</span> בית</a>
-    <a href="movements.html"><span>💳</span> תנועות</a>
-    <a href="budgets.html"><span>📊</span> תקציבים</a>
-    <a href="savings.html" class="active"><span>💰</span> חסכונות</a>
-    <a href="history.html"><span>📈</span> היסטוריה</a>
-    <a href="settings.html"><span>⚙️</span> הגדרות</a>
+<a href="index.html">🏠 בית</a>
+<a href="movements.html">💳 תנועות</a>
+<a href="savings.html" class="active">💰 חסכונות</a>
+<a href="history.html">📈 היסטוריה</a>
+<a href="settings.html">⚙️ הגדרות</a>
 </footer>
 
+<script src="js/storage.js"></script>
+<script src="js/savings.js"></script>
+
 <script>
-function goToDashboard(){
-    window.scrollTo({ top:0, behavior:'smooth' });
-}
-
-/* TAB SWITCH */
-function showTab(tab){
-    document.getElementById('newTab').style.display = tab==='new'?'block':'none';
-    document.getElementById('existingTab').style.display = tab==='existing'?'block':'none';
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelector('.tab-btn[onclick*="'+tab+'"]').classList.add('active');
-}
-
-/* ===== SAVINGS DATA ===== */
-const savings = [];
-let editIndex = null;
-
 function createSaving(){
-    const name = document.getElementById('newName').value;
-    const initial = parseFloat(document.getElementById('initialAmount').value) || 0;
-    const target = parseFloat(document.getElementById('targetAmount').value) || null;
-    const dateStr = document.getElementById('targetDate').value || null;
-    const targetDate = dateStr ? new Date(dateStr + '-01') : null;
-    const monthsLeft = targetDate ? Math.max(1, (targetDate.getFullYear()-new Date().getFullYear())*12 + (targetDate.getMonth()-new Date().getMonth())) : null;
-
-    if(!name) return alert('אנא מלא שם החיסכון');
-
-    savings.push({ name, current: initial, target, targetDate, monthsLeft });
-    renderExisting();
-    document.getElementById('newName').value='';
-    document.getElementById('initialAmount').value='';
-    document.getElementById('targetAmount').value='';
-    document.getElementById('targetDate').value='';
-}
-
-function addToSaving(index){
-    editIndex = index;
-    document.getElementById('editAmount').value = savings[index].current;
-    document.getElementById('editModal').style.display = 'flex';
-}
-
-function closeModal(){
-    document.getElementById('editModal').style.display = 'none';
-    editIndex = null;
-}
-
-function saveEdit(){
-    const value = parseFloat(document.getElementById('editAmount').value);
-    if(!isNaN(value)){
-        savings[editIndex].current = value;
-        renderExisting();
-        closeModal();
-    } else {
-        alert('אנא הכנס סכום חוקי');
-    }
-}
-
-function renderExisting(){
-    const container = document.getElementById('existingTab');
-    container.innerHTML = '';
-    savings.forEach((s, index)=>{
-        let percent = s.target ? Math.min(100, (s.current/s.target)*100) : null;
-        let monthly = (s.target && s.monthsLeft) ? ((s.target - s.current)/s.monthsLeft).toFixed(2) : null;
-        const div = document.createElement('div');
-        div.className='saving-item';
-        div.innerHTML = `
-            <div>
-                <strong>${s.name}</strong>
-                <span>₪ ${s.current}${s.target ? ' / ₪ ' + s.target : ''}</span>
-                ${percent!==null ? `<div class="progress-bar"><div class="progress-bar-inner" style="width:${percent}%;"></div></div>` : ''}
-                ${monthly!==null ? `<span>נדרש לחודש: ₪ ${monthly}</span>` : ''}
-            </div>
-            <button onclick="addToSaving(${index})" style="background:none; border:none; cursor:pointer; font-size:18px;">✏️</button>
-        `;
-        container.appendChild(div);
-    });
+addSaving(
+document.getElementById("savingName").value,
+document.getElementById("target").value,
+document.getElementById("targetDate").value
+);
+alert("נוצר בהצלחה");
 }
 </script>
 
