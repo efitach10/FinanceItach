@@ -1,141 +1,148 @@
 //////////////////////////////////////////////////
-// api.js - מחבר את האפליקציה ל-Google Sheets
+// api.js - מנוע חיבור ל-Google Sheets
 //////////////////////////////////////////////////
 
-const api = (function(){
+const API_BASE_URL = "https://script.google.com/macros/s/AKfycbzN421EIrFI6mSk1x5nrUolgNQ40_vzP7n7FrQ9rhndYT4G3A6sJ8Ac-XIsByu0dpFo/exec"; // החלף בכתובת Web App שלך
 
-    // תצורת הגיליונות (IDs של הגיליון והטבלאות)
-    const SPREADSHEET_ID = "https://script.google.com/macros/s/AKfycbzN421EIrFI6mSk1x5nrUolgNQ40_vzP7n7FrQ9rhndYT4G3A6sJ8Ac-XIsByu0dpFo/exec"; // שנה למזהה האמיתי
-    const SHEETS = {
-        movements: "Movements",
-        budgets: "Budgets",
-        savings: "Savings",
-        categories: "Categories",
-        history: "History"
-    };
+// ======= קטגוריות =======
+async function getCategories() {
+  const res = await fetch(`${API_BASE_URL}?path=getCategories`);
+  if(!res.ok) throw new Error("Failed to fetch categories");
+  return await res.json();
+}
 
-    ////////////////////////
-    // קטגוריות
-    ////////////////////////
-    function getCategories() {
-        // כאן תעשה קריאה ל-Google Apps Script
-        // לדוגמה, api.gs יחזיר מערך קטגוריות
-        return fetchCategoryDataFromSheets();
-    }
+async function addCategory(name){
+  const res = await fetch(API_BASE_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({path:"addCategory", name})
+  });
+  const data = await res.json();
+  if(!data.success) throw new Error("Failed to add category");
+  return data;
+}
 
-    function addCategory(name){
-        fetch("/gs-api/addCategory", {
-            method: "POST",
-            body: JSON.stringify({name}),
-            headers: {'Content-Type':'application/json'}
-        }).then(()=>console.log("Category added"));
-    }
+async function updateCategory(idx, newName){
+  const res = await fetch(API_BASE_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({path:"updateCategory", idx, newName})
+  });
+  const data = await res.json();
+  if(!data.success) throw new Error("Failed to update category");
+  return data;
+}
 
-    function updateCategory(idx, newName){
-        fetch("/gs-api/updateCategory", {
-            method: "POST",
-            body: JSON.stringify({idx,newName}),
-            headers: {'Content-Type':'application/json'}
-        }).then(()=>console.log("Category updated"));
-    }
+async function deleteCategory(idx){
+  const res = await fetch(API_BASE_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({path:"deleteCategory", idx})
+  });
+  const data = await res.json();
+  if(!data.success) throw new Error("Failed to delete category");
+  return data;
+}
 
-    function deleteCategory(idx){
-        fetch("/gs-api/deleteCategory", {
-            method: "POST",
-            body: JSON.stringify({idx}),
-            headers: {'Content-Type':'application/json'}
-        }).then(()=>console.log("Category deleted"));
-    }
+//////////////////////////////////////////////////
+// תנועות
+//////////////////////////////////////////////////
+async function getMovements(month, year){
+  const res = await fetch(`${API_BASE_URL}?path=getMovements&month=${month}&year=${year}`);
+  if(!res.ok) throw new Error("Failed to fetch movements");
+  return await res.json();
+}
 
-    ////////////////////////
-    // תנועות
-    ////////////////////////
-    function getMovements(month, year){
-        return fetch(`/gs-api/getMovements?month=${month}&year=${year}`)
-            .then(res=>res.json());
-    }
+async function addMovement(movement){
+  const res = await fetch(API_BASE_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({path:"addMovement", ...movement})
+  });
+  const data = await res.json();
+  if(!data.success) throw new Error("Failed to add movement");
+  return data;
+}
 
-    function addMovement(movement){
-        // movement = {type, category, amount, date, notes, recurring}
-        return fetch("/gs-api/addMovement", {
-            method:"POST",
-            body: JSON.stringify(movement),
-            headers:{'Content-Type':'application/json'}
-        });
-    }
+//////////////////////////////////////////////////
+// חסכונות
+//////////////////////////////////////////////////
+async function getSavings(){
+  const res = await fetch(`${API_BASE_URL}?path=getSavings`);
+  if(!res.ok) throw new Error("Failed to fetch savings");
+  return await res.json();
+}
 
-    ////////////////////////
-    // חסכונות
-    ////////////////////////
-    function getSavings(){
-        return fetch("/gs-api/getSavings").then(res=>res.json());
-    }
+async function addSaving(saving){
+  const res = await fetch(API_BASE_URL, {
+    method:"POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({path:"addSaving", ...saving})
+  });
+  const data = await res.json();
+  if(!data.success) throw new Error("Failed to add saving");
+  return data;
+}
 
-    function addSaving(saving){
-        // saving = {name, targetAmount, targetDate, currentAmount}
-        return fetch("/gs-api/addSaving", {
-            method:"POST",
-            body: JSON.stringify(saving),
-            headers:{'Content-Type':'application/json'}
-        });
-    }
+async function updateSaving(idx, dataObj){
+  const res = await fetch(API_BASE_URL, {
+    method:"POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({path:"updateSaving", idx, data: dataObj})
+  });
+  const data = await res.json();
+  if(!data.success) throw new Error("Failed to update saving");
+  return data;
+}
 
-    function updateSaving(idx, data){
-        return fetch("/gs-api/updateSaving", {
-            method:"POST",
-            body: JSON.stringify({idx,data}),
-            headers:{'Content-Type':'application/json'}
-        });
-    }
+//////////////////////////////////////////////////
+// תקציבים
+//////////////////////////////////////////////////
+async function getBudgets(){
+  const res = await fetch(`${API_BASE_URL}?path=getBudgets`);
+  if(!res.ok) throw new Error("Failed to fetch budgets");
+  return await res.json();
+}
 
-    ////////////////////////
-    // תקציבים
-    ////////////////////////
-    function getBudgets(){
-        return fetch("/gs-api/getBudgets").then(res=>res.json());
-    }
+async function addBudget(budget){
+  const res = await fetch(API_BASE_URL, {
+    method:"POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({path:"addBudget", ...budget})
+  });
+  const data = await res.json();
+  if(!data.success) throw new Error("Failed to add budget");
+  return data;
+}
 
-    function addBudget(budget){
-        return fetch("/gs-api/addBudget", {
-            method:"POST",
-            body: JSON.stringify(budget),
-            headers:{'Content-Type':'application/json'}
-        });
-    }
+async function updateBudget(idx, dataObj){
+  const res = await fetch(API_BASE_URL, {
+    method:"POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({path:"updateBudget", idx, data: dataObj})
+  });
+  const data = await res.json();
+  if(!data.success) throw new Error("Failed to update budget");
+  return data;
+}
 
-    function updateBudget(idx, data){
-        return fetch("/gs-api/updateBudget", {
-            method:"POST",
-            body: JSON.stringify({idx,data}),
-            headers:{'Content-Type':'application/json'}
-        });
-    }
+//////////////////////////////////////////////////
+// היסטוריה
+//////////////////////////////////////////////////
+async function getHistory(month, year){
+  const res = await fetch(`${API_BASE_URL}?path=getHistory&month=${month}&year=${year}`);
+  if(!res.ok) throw new Error("Failed to fetch history");
+  return await res.json();
+}
 
-    ////////////////////////
-    // היסטוריה
-    ////////////////////////
-    function getHistory(month, year){
-        return fetch(`/gs-api/getHistory?month=${month}&year=${year}`)
-            .then(res=>res.json());
-    }
-
-    ////////////////////////
-    // PUBLIC API
-    ////////////////////////
-    return {
-        getCategories,
-        addCategory,
-        updateCategory,
-        deleteCategory,
-        getMovements,
-        addMovement,
-        getSavings,
-        addSaving,
-        updateSaving,
-        getBudgets,
-        addBudget,
-        updateBudget,
-        getHistory
-    }
-
-})();
+//////////////////////////////////////////////////
+// פונקציות עזר
+//////////////////////////////////////////////////
+async function testAPI() {
+  try{
+    const categories = await getCategories();
+    console.log("Categories:", categories);
+  } catch(err){
+    console.error(err);
+  }
+}
