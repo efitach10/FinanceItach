@@ -4,331 +4,51 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Itach Home Finance</title>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js">
 <style>
-:root {
-    --bg:#0f172a;
-    --card:#1e293b;
-    --soft:#334155;
-    --text:#f1f5f9;
-    --muted:#94a3b8;
-    --accent:#f59e0b;
-    --positive:#10b981;
-    --negative:#ef4444;
-    --shadow:0 10px 30px rgba(0,0,0,0.4);
-}
-
-body{
-    margin:0;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-}
-
-header{
-    padding:35px 20px;
-    text-align:center;
-    border-bottom:1px solid #1f2937;
-}
-
-.logo{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:12px;
-    direction:ltr;
-}
-
-.logo-icon{
-    width:44px;
-    height:44px;
-    border-radius:12px;
-    background:var(--accent);
-    color:#111;
-    font-weight:bold;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.logo-text{
-    text-align:left;
-}
-
-.logo-text span{
-    display:block;
-    font-size:13px;
-    color:var(--muted);
-}
-
-.month-container{
-    margin-top:25px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:20px;
-}
-
-.month-btn{
-    background:var(--card);
-    border:1px solid var(--soft);
-    color:var(--text);
-    padding:6px 14px;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-.month-display{
-    font-size:16px;
-    cursor:pointer;
-}
-
-.month-popup{
-    display:none;
-    position:fixed;
-    bottom:80px;
-    left:50%;
-    transform:translateX(-50%);
-    background:var(--card);
-    padding:20px;
-    border-radius:16px;
-    box-shadow:var(--shadow);
-    z-index:10;
-}
-
-.month-popup select{
-    background:var(--soft);
-    border:none;
-    padding:8px;
-    color:white;
-    border-radius:8px;
-}
-
-.dashboard{
-    padding:30px 20px 160px;
-    display:grid;
-    gap:20px;
-    grid-template-columns:1fr 1fr;
-}
-
-.card{
-    background:var(--card);
-    border-radius:16px;
-    padding:22px;
-    box-shadow:var(--shadow);
-    border:1px solid #263244;
-    cursor:pointer;
-    transition:all 0.3s ease;
-    position:relative;
-    overflow:hidden;
-}
-
-.card.expanded{
-    grid-column:1/-1;
-}
-
-.card h3{
-    margin:0;
-    font-size:14px;
-    color:var(--muted);
-}
-
-.amount{
-    margin-top:12px;
-    font-size:26px;
-    font-weight:600;
-}
-
-/* detail area ready for dynamic data */
-.detail{
-    margin-top:12px;
-    font-size:13px;
-    color:var(--text);
-    max-height:0;
-    overflow:hidden;
-    transition:max-height 0.3s ease;
-}
-
-.card.expanded .detail{
-    max-height:300px;
-}
-
-/* ===== ALERT CARD ===== */
-
-.alert-card{
-    grid-column:1/-1;
-    background:var(--card);
-    border-radius:16px;
-    padding:20px;
-    box-shadow:var(--shadow);
-    border:1px solid #263244;
-    color:var(--accent);
-    text-align:center;
-    font-weight:600;
-}
-
-/* ===== BOTTOM NAV ===== */
-
-footer{
-    position:fixed;
-    bottom:0;
-    width:100%;
-    background:#111827;
-    border-top:1px solid #1f2937;
-    display:flex;
-    justify-content:space-around;
-    padding:10px 0;
-    font-size:12px;
-}
-
-footer a{
-    text-decoration:none;
-    color:var(--muted);
-    font-size:11px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:4px;
-}
-
-footer a.active{
-    color:var(--accent);
-}
-
-footer span{
-    font-size:18px;
-}
-
-@media(min-width:768px){
-    .dashboard{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
+body{margin:0;font-family:sans-serif;background:#0f172a;color:#fff}
+header{text-align:center;padding:30px;border-bottom:1px solid #1f2937}
+.card{background:#1e293b;margin:20px;padding:20px;border-radius:14px}
+footer{position:fixed;bottom:0;width:100%;background:#111827;display:flex;justify-content:space-around;padding:10px 0}
+footer a{color:#94a3b8;text-decoration:none;font-size:12px;text-align:center}
+footer a.active{color:#f59e0b}
 </style>
 </head>
-
 <body>
 
 <header>
-
-<div class="logo">
-    <div class="logo-icon">IHF</div>
-    <div class="logo-text">
-        Itach Home Finance
-        <span>Premium Budget Management</span>
-    </div>
-</div>
-
-<div class="month-container">
-    <button class="month-btn" onclick="changeMonth(-1)">▶</button>
-    <div class="month-display" onclick="togglePopup()" id="monthText"></div>
-    <button class="month-btn" onclick="changeMonth(1)">◀</button>
-</div>
-
+<h2>Itach Home Finance</h2>
 </header>
 
-<div class="month-popup" id="monthPopup">
-    <select onchange="selectMonth(this.value)" id="monthSelect"></select>
+<div class="card">
+<h3>סיכום החודש</h3>
+<p id="income"></p>
+<p id="expenses"></p>
+<p id="net"></p>
 </div>
 
-<section class="dashboard">
-
-    <!-- כרטיסים ריקים מוכנים לנתונים דינמיים -->
-    <div class="card expenses" onclick="toggleCard(this)">
-        <h3>הוצאות</h3>
-        <div class="amount" id="expensesAmount">₪ --</div>
-        <div class="detail" id="expensesDetail"></div>
-    </div>
-
-    <div class="card income" onclick="toggleCard(this)">
-        <h3>הכנסות</h3>
-        <div class="amount" id="incomeAmount">₪ --</div>
-        <div class="detail" id="incomeDetail"></div>
-    </div>
-
-    <div class="card savings" onclick="toggleCard(this)">
-        <h3>חסכון אפשרי</h3>
-        <div class="amount" id="savingsAmount">₪ --</div>
-        <div class="detail" id="savingsDetail"></div>
-    </div>
-
-    <div class="card over" onclick="toggleCard(this)">
-        <h3>חריגות</h3>
-        <div class="amount" id="overAmount">₪ --</div>
-        <div class="detail" id="overDetail"></div>
-    </div>
-
-    <!-- כרטיס התראה דינמי -->
-    <div class="alert-card" id="alertCard">
-        ⚠️ המידע החודשי יופיע כאן
-    </div>
-
-</section>
-
 <footer>
-    <a href="index.html" class="active"><span>🏠</span> בית</a>
-    <a href="movements.html"><span>💳</span> תנועות</a>
-    <a href="budgets.html"><span>📊</span> תקציבים</a>
-    <a href="savings.html"><span>💰</span> חסכונות</a>
-    <a href="history.html"><span>📈</span> היסטוריה</a>
-    <a href="settings.html"><span>⚙️</span> הגדרות</a>
+<a href="index.html" class="active">🏠 בית</a>
+<a href="movements.html">💳 תנועות</a>
+<a href="savings.html">💰 חסכונות</a>
+<a href="history.html">📈 היסטוריה</a>
+<a href="settings.html">⚙️ הגדרות</a>
 </footer>
 
+<script src="js/storage.js"></script>
+<script src="js/categories.js"></script>
+<script src="js/movements.js"></script>
+<script src="js/savings.js"></script>
+<script src="js/history.js"></script>
+<script src="js/ui.js"></script>
+
 <script>
-const months=["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
-let current=new Date().getMonth();
+const month = new Date().getMonth();
+const summary = calculateMonthlySummary(month);
 
-function renderMonth(){
-    document.getElementById("monthText").innerText=months[current]+" "+new Date().getFullYear();
-    document.getElementById("monthSelect").value=current;
-}
-
-function changeMonth(step){
-    current+=step;
-    if(current<0) current=11;
-    if(current>11) current=0;
-    renderMonth();
-}
-
-function togglePopup(){
-    const popup=document.getElementById("monthPopup");
-    popup.style.display=popup.style.display==="block"?"none":"block";
-}
-
-function selectMonth(val){
-    current=parseInt(val);
-    renderMonth();
-    togglePopup();
-}
-
-function init(){
-    const select=document.getElementById("monthSelect");
-    months.forEach((m,i)=>{
-        const option=document.createElement("option");
-        option.value=i;
-        option.text=m;
-        select.appendChild(option);
-    });
-    renderMonth();
-}
-
-init();
-
-function toggleCard(card){
-    const expanded=document.querySelector(".card.expanded");
-    if(expanded && expanded!==card) expanded.classList.remove("expanded");
-    card.classList.toggle("expanded");
-}
-
-/* פונקציות JS לעדכון דינמי בעתיד */
-function updateCard(type, amount, details){
-    document.getElementById(type+"Amount").innerText="₪ "+amount;
-    document.getElementById(type+"Detail").innerHTML=details.map(d=>`<p>${d}</p>`).join("");
-}
-
-function updateAlert(message){
-    document.getElementById("alertCard").innerText=message;
-}
+document.getElementById("income").innerText = "הכנסות: " + formatCurrency(summary.income);
+document.getElementById("expenses").innerText = "הוצאות: " + formatCurrency(summary.expenses);
+document.getElementById("net").innerText = "יתרה: " + formatCurrency(summary.net);
 </script>
 
 </body>
