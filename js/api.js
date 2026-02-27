@@ -1,84 +1,141 @@
-// api.js – שכבת תקשורת אחידה עם Google Sheets
-// כל הדפים ישתמשו בזה
+//////////////////////////////////////////////////
+// api.js - מחבר את האפליקציה ל-Google Sheets
+//////////////////////////////////////////////////
 
-const API_URL = "PASTE_YOUR_WEB_APP_URL_HERE"; // כאן הדבק את ה-URL של ה-Web App
+const api = (function(){
 
-/**
- * GET כל הנתונים מטבלת Sheet מסוימת
- * @param {string} sheetName - שם ה-Sheet
- * @returns {Promise<Array>} מערך אובייקטים
- */
-async function getData(sheetName) {
-    const url = `${API_URL}?action=get&sheet=${sheetName}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("Error fetching data: " + res.status);
-    return await res.json();
-}
-
-/**
- * POST – הוספת שורה ל-Sheet
- * @param {string} sheetName - שם ה-Sheet
- * @param {Object} data - אובייקט עם הנתונים
- */
-async function addData(sheetName, data) {
-    const body = {
-        action: "add",
-        sheet: sheetName,
-        data
+    // תצורת הגיליונות (IDs של הגיליון והטבלאות)
+    const SPREADSHEET_ID = "https://script.google.com/macros/s/AKfycbzN421EIrFI6mSk1x5nrUolgNQ40_vzP7n7FrQ9rhndYT4G3A6sJ8Ac-XIsByu0dpFo/exec"; // שנה למזהה האמיתי
+    const SHEETS = {
+        movements: "Movements",
+        budgets: "Budgets",
+        savings: "Savings",
+        categories: "Categories",
+        history: "History"
     };
-    const res = await fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify(body)
-    });
-    if (!res.ok) throw new Error("Error adding data: " + res.status);
-    return await res.json();
-}
 
-/**
- * POST – עדכון שדה בחסכון
- * @param {number|string} id - id של השורה ב-Sheet savings
- * @param {number} newAmount - סכום חדש
- */
-async function updateSaving(id, newAmount) {
-    const body = {
-        action: "updateSaving",
-        id,
-        newAmount
-    };
-    const res = await fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify(body)
-    });
-    if (!res.ok) throw new Error("Error updating saving: " + res.status);
-    return await res.json();
-}
+    ////////////////////////
+    // קטגוריות
+    ////////////////////////
+    function getCategories() {
+        // כאן תעשה קריאה ל-Google Apps Script
+        // לדוגמה, api.gs יחזיר מערך קטגוריות
+        return fetchCategoryDataFromSheets();
+    }
 
-/**
- * POST – מחיקת שורה מטבלה
- * @param {string} sheetName - שם ה-Sheet
- * @param {number|string} id - מזהה השורה
- */
-async function deleteData(sheetName, id) {
-    const body = {
-        action: "delete",
-        sheet: sheetName,
-        id
-    };
-    const res = await fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify(body)
-    });
-    if (!res.ok) throw new Error("Error deleting data: " + res.status);
-    return await res.json();
-}
+    function addCategory(name){
+        fetch("/gs-api/addCategory", {
+            method: "POST",
+            body: JSON.stringify({name}),
+            headers: {'Content-Type':'application/json'}
+        }).then(()=>console.log("Category added"));
+    }
 
-/**
- * פונקציה עזר: מחזיר אובייקט ריק עם כל השדות מטבלת Sheet
- * שימושי ליצירת טפסים דינמיים
- * @param {Array} headers
- */
-function createEmptyRow(headers) {
-    const obj = {};
-    headers.forEach(h => obj[h] = "");
-    return obj;
-}
+    function updateCategory(idx, newName){
+        fetch("/gs-api/updateCategory", {
+            method: "POST",
+            body: JSON.stringify({idx,newName}),
+            headers: {'Content-Type':'application/json'}
+        }).then(()=>console.log("Category updated"));
+    }
+
+    function deleteCategory(idx){
+        fetch("/gs-api/deleteCategory", {
+            method: "POST",
+            body: JSON.stringify({idx}),
+            headers: {'Content-Type':'application/json'}
+        }).then(()=>console.log("Category deleted"));
+    }
+
+    ////////////////////////
+    // תנועות
+    ////////////////////////
+    function getMovements(month, year){
+        return fetch(`/gs-api/getMovements?month=${month}&year=${year}`)
+            .then(res=>res.json());
+    }
+
+    function addMovement(movement){
+        // movement = {type, category, amount, date, notes, recurring}
+        return fetch("/gs-api/addMovement", {
+            method:"POST",
+            body: JSON.stringify(movement),
+            headers:{'Content-Type':'application/json'}
+        });
+    }
+
+    ////////////////////////
+    // חסכונות
+    ////////////////////////
+    function getSavings(){
+        return fetch("/gs-api/getSavings").then(res=>res.json());
+    }
+
+    function addSaving(saving){
+        // saving = {name, targetAmount, targetDate, currentAmount}
+        return fetch("/gs-api/addSaving", {
+            method:"POST",
+            body: JSON.stringify(saving),
+            headers:{'Content-Type':'application/json'}
+        });
+    }
+
+    function updateSaving(idx, data){
+        return fetch("/gs-api/updateSaving", {
+            method:"POST",
+            body: JSON.stringify({idx,data}),
+            headers:{'Content-Type':'application/json'}
+        });
+    }
+
+    ////////////////////////
+    // תקציבים
+    ////////////////////////
+    function getBudgets(){
+        return fetch("/gs-api/getBudgets").then(res=>res.json());
+    }
+
+    function addBudget(budget){
+        return fetch("/gs-api/addBudget", {
+            method:"POST",
+            body: JSON.stringify(budget),
+            headers:{'Content-Type':'application/json'}
+        });
+    }
+
+    function updateBudget(idx, data){
+        return fetch("/gs-api/updateBudget", {
+            method:"POST",
+            body: JSON.stringify({idx,data}),
+            headers:{'Content-Type':'application/json'}
+        });
+    }
+
+    ////////////////////////
+    // היסטוריה
+    ////////////////////////
+    function getHistory(month, year){
+        return fetch(`/gs-api/getHistory?month=${month}&year=${year}`)
+            .then(res=>res.json());
+    }
+
+    ////////////////////////
+    // PUBLIC API
+    ////////////////////////
+    return {
+        getCategories,
+        addCategory,
+        updateCategory,
+        deleteCategory,
+        getMovements,
+        addMovement,
+        getSavings,
+        addSaving,
+        updateSaving,
+        getBudgets,
+        addBudget,
+        updateBudget,
+        getHistory
+    }
+
+})();
