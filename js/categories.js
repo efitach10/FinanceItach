@@ -31,8 +31,4 @@ const api = {
     }
 };
 
-// אתחול לדוגמה (ניתן למחוק כשמחוברים ל-Sheets)
-categories.push("שכירות");
-categories.push("אוכל");
-categories.push("תחבורה");
-categories.push("בידור");
+
