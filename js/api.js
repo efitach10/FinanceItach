@@ -8,7 +8,7 @@ async function callAPI(path, params = {}) {
         url += `&${key}=${encodeURIComponent(params[key])}`;
     });
 
-    const res = await fetch(url);
+    const res = await fetch(url);   // 🔥 אין POST יותר
     const data = await res.json();
 
     if(!res.ok){
@@ -36,69 +36,3 @@ async function updateCategory(idx,newName){
 async function deleteCategory(idx){
     return await callAPI("deleteCategory",{idx});
 }
-🔥 2️⃣ עכשיו צריך לעדכן את Code.gs
-
-במקום להשתמש ב-doPost
-נעביר הכל ל-doGet
-
-תשנה את ה-doGet שלך לזה:
-
-function doGet(e){
-
-  const path = e.parameter.path;
-
-  switch(path){
-
-    case "getCategories":
-      return json(getCategories());
-
-    case "addCategory":
-      addCategory(e.parameter.name);
-      return json({success:true});
-
-    case "updateCategory":
-      updateCategory(parseInt(e.parameter.idx), e.parameter.newName);
-      return json({success:true});
-
-    case "deleteCategory":
-      deleteCategory(parseInt(e.parameter.idx));
-      return json({success:true});
-
-    default:
-      return json({error:"Unknown path"});
-  }
-}
-
-function json(data){
-  return ContentService
-    .createTextOutput(JSON.stringify(data))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-ואפשר למחוק את doPost לגמרי.
-
-🚀 למה זה עובד?
-
-GET לא שולח Preflight
-אין OPTIONS
-אין CORS חסום
-Google מאפשר את זה בלי בעיה
-
-📌 אחרי זה:
-
-Deploy → New Version
-
-תעתיק את ה-URL החדש
-
-תדביק ב-api.js
-
-תנסה שוב
-
-🎯 זה אמור לעבוד מיד.
-
-אם זה עדיין לא עובד —
-אז נעשה פתרון Enterprise עם CORS headers מלאים.
-
-אבל 99% שזה יפתור את הבעיה עכשיו.
-
-תעדכן אותי 👇
