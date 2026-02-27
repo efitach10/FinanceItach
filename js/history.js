@@ -1,22 +1,37 @@
-function calculateMonthlySummary(monthIndex) {
+// history.js
 
-    const monthMovements = getMovementsByMonth(monthIndex);
+let currentDate = new Date(); // התאריך הנוכחי
 
-    const income = monthMovements
-        .filter(m => m.type === 'income')
-        .reduce((sum, m) => sum + m.amount, 0);
+// שמות החודשים בעברית
+const months = [
+    "ינואר","פברואר","מרץ","אפריל","מאי","יוני",
+    "יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"
+];
 
-    const expenses = monthMovements
-        .filter(m => m.type === 'expense')
-        .reduce((sum, m) => sum + m.amount, 0);
-
-    const totalSavings = getAllSavings()
-        .reduce((sum, s) => sum + s.current, 0);
-
-    return {
-        income,
-        expenses,
-        totalSavings,
-        net: income - expenses
-    };
+// מחליף חודש
+function changeMonth(offset){
+    currentDate.setMonth(currentDate.getMonth() + offset);
+    updateMonthDisplay();
+    loadHistoryData(); // טוען את הנתונים מה-Sheets בהתאם לחודש החדש
 }
+
+// מעדכן את תצוגת החודש
+function updateMonthDisplay(){
+    const monthName = months[currentDate.getMonth()];
+    const year = currentDate.getFullYear();
+    document.getElementById("currentMonth").textContent = `${monthName} ${year}`;
+}
+
+// טוען את הנתונים מה-Sheets
+function loadHistoryData(){
+    // דוגמה – כאן תעשה fetch או קריאה ל-API שלך
+    // לדוגמה: api.getHistory(currentDate.getFullYear(), currentDate.getMonth()+1)
+    console.log("טוען נתונים עבור:", currentDate);
+    // כאן תעדכן את summary cards והגרף
+}
+
+// אתחול בעת טעינת הדף
+window.addEventListener("DOMContentLoaded", () => {
+    updateMonthDisplay();
+    loadHistoryData();
+});
