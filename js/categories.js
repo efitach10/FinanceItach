@@ -1,34 +1,72 @@
 // categories.js
 
 /* ===== CATEGORY MANAGEMENT ===== */
-// כאן נשמור זמנית את הקטגוריות – בהמשך יתחבר ל-Google Sheets דרך api.js
-const categories = [];
+// מחזיק את רשימת הקטגוריות בזיכרון המקומי (עד שהטעננו מ-Sheets)
+let categories = [];
 
-// API לדפים אחרים (Movements, Budgets וכו')
-const api = {
+/* ===== פונקציות API ===== */
+const categoryAPI = {
+    
+    // טען קטגוריות מה-Google Sheets
+    loadCategories: async function() {
+        try {
+            categories = await getCategories(); // פונקציה מ-api.js
+            return [...categories];
+        } catch(err){
+            console.error("Failed to load categories:", err);
+            return [];
+        }
+    },
+
+    // החזר עותק של הקטגוריות
     getCategories: function() {
-        // מחזיר עותק כדי למנוע שינוי ישיר
         return [...categories];
     },
-    addCategory: function(name){
-        categories.push(name);
-        // כאן אפשר להוסיף קריאה ל-Google Sheets כדי לשמור
-        // e.g., googleApi.addCategoryToSheet(name)
-    },
-    updateCategory: function(idx, newName){
-        if(idx >=0 && idx < categories.length){
-            categories[idx] = newName;
-            // כאן אפשר לעדכן את ה-Sheet
-            // e.g., googleApi.updateCategoryInSheet(idx, newName)
+
+    // הוסף קטגוריה חדשה גם לזיכרון וגם ל-Google Sheets
+    addCategory: async function(name) {
+        try {
+            const res = await addCategory(name); // api.js
+            if(res.success){
+                categories.push(name);
+            }
+            return res;
+        } catch(err){
+            console.error("Failed to add category:", err);
+            throw err;
         }
     },
-    deleteCategory: function(idx){
-        if(idx >=0 && idx < categories.length){
-            categories.splice(idx, 1);
-            // כאן אפשר למחוק מה-Sheet
-            // e.g., googleApi.deleteCategoryFromSheet(idx)
+
+    // עדכן קטגוריה קיימת לפי אינדקס
+    updateCategory: async function(idx, newName){
+        try {
+            const res = await updateCategory(idx, newName); // api.js
+            if(res.success){
+                if(idx >=0 && idx < categories.length){
+                    categories[idx] = newName;
+                }
+            }
+            return res;
+        } catch(err){
+            console.error("Failed to update category:", err);
+            throw err;
+        }
+    },
+
+    // מחק קטגוריה לפי אינדקס
+    deleteCategory: async function(idx){
+        try {
+            const res = await deleteCategory(idx); // api.js
+            if(res.success){
+                if(idx >=0 && idx < categories.length){
+                    categories.splice(idx,1);
+                }
+            }
+            return res;
+        } catch(err){
+            console.error("Failed to delete category:", err);
+            throw err;
         }
     }
+
 };
-
-
