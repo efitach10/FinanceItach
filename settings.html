@@ -211,56 +211,54 @@ footer span{
 
 <script src="js/api.js"></script>
 <script src="js/categories.js"></script>
+
 <script>
-/* ===== CATEGORY MANAGEMENT JS ===== */
 function renderCategories(){
     const list = document.getElementById('categoryList');
     list.innerHTML = '';
-    const categories = api.getCategories(); // מחזיר מערך קטגוריות
+
     categories.forEach((cat, idx) => {
         const div = document.createElement('div');
         div.className = 'category-item';
         div.innerHTML = `
             <span>${cat}</span>
             <div>
-                <button onclick="editCategory(${idx})">✏️</button>
-                <button onclick="deleteCategory(${idx})">🗑️</button>
+                <button onclick="editCategoryUI(${idx})">✏️</button>
+                <button onclick="deleteCategoryUI(${idx})">🗑️</button>
             </div>
         `;
         list.appendChild(div);
     });
 }
 
-function addCategory(){
+async function addCategoryUI(){
     const input = document.getElementById('newCategoryInput');
     const value = input.value.trim();
-    if(value){
-        api.addCategory(value);
-        input.value = '';
-        renderCategories();
-    }
+
+    if(!value) return;
+
+    await createCategory(value);   // מתוך categories.js
+    input.value = '';
+    renderCategories();
 }
 
-function editCategory(idx){
-    const newName = prompt("ערוך את שם הקטגוריה:", api.getCategories()[idx]);
-    if(newName){
-        api.updateCategory(idx, newName);
-        renderCategories();
-    }
+async function editCategoryUI(idx){
+    const newName = prompt("ערוך את שם הקטגוריה:", categories[idx]);
+    if(!newName) return;
+
+    await editCategory(idx,newName);
+    renderCategories();
 }
 
-function deleteCategory(idx){
-    if(confirm("למחוק את הקטגוריה?")){
-        api.deleteCategory(idx);
-        renderCategories();
-    }
+async function deleteCategoryUI(idx){
+    if(!confirm("למחוק את הקטגוריה?")) return;
+
+    await removeCategory(idx);
+    renderCategories();
 }
 
 /* אתחול */
-document.addEventListener('DOMContentLoaded', () => {
-    renderCategories();
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadCategories();   // טוען מ-Google Sheets
 });
 </script>
-
-</body>
-</html>
