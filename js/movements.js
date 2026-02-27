@@ -1,78 +1,91 @@
-//// movements.js
+// movements.js
 
-/* ===== SWITCH BETWEEN TABS ===== */
-function showTab(tab){
-    document.getElementById('fixedTab').style.display = tab==='fixed'?'block':'none';
-    document.getElementById('variableTab').style.display = tab==='variable'?'block':'none';
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelector('.tab-btn[onclick*="'+tab+'"]').classList.add('active');
-}
+// ===== LOAD CATEGORIES INTO DROPDOWN =====
+async function loadMovementCategories() {
+    try {
+        const categories = await getData("categories"); // מחובר למסך ההגדרות
 
-/* ===== LOAD EXISTING MOVEMENTS FROM GOOGLE SHEETS ===== */
-async function loadMovements(){
-    try{
-        const movements = await getData("movements"); // api.js מחזיר מערך של תנועות
-        const list = document.getElementById("movementsList");
-        list.innerHTML = ""; // נקה קודם
-
-        movements.forEach(m=>{
-            const div = document.createElement("div");
-            div.className = "movement-item "+m.type;
-            div.innerHTML = `<span>${m.category}</span><span>₪ ${m.amount}</span><span>${m.date}</span>`;
-            if(m.notes) div.innerHTML += `<span>${m.notes}</span>`;
-            list.appendChild(div);
+        // Fixed Tab
+        const fixedSelect = document.getElementById("fixedCategory");
+        fixedSelect.innerHTML = "";
+        categories.forEach(c => {
+            const option = document.createElement("option");
+            option.value = c.name;
+            option.textContent = c.name;
+            fixedSelect.appendChild(option);
         });
-    }catch(err){
-        console.error("Error loading movements:", err);
+
+        // Variable Tab
+        const variableSelect = document.getElementById("variableCategory");
+        variableSelect.innerHTML = "";
+        categories.forEach(c => {
+            const option = document.createElement("option");
+            option.value = c.name;
+            option.textContent = c.name;
+            variableSelect.appendChild(option);
+        });
+
+    } catch (err) {
+        console.error("Error loading categories:", err);
     }
 }
 
-/* ===== SAVE MOVEMENT ===== */
-async function saveMovement(tab){
+// ===== ADD MOVEMENT =====
+async function saveMovement(type){
     try{
-        let type, category, amount, date, notes;
-        if(tab==='fixed'){
-            type = document.getElementById("fixedType").value;
-            category = document.querySelector("#fixedTab input[placeholder^='לדוגמה']").value;
-            amount = document.querySelector("#fixedTab input[type='number']").value;
-            date = document.querySelector("#fixedTab input[type='date']").value;
-            notes = "";
+        let movement = {};
+        if(type==='fixed'){
+            movement = {
+                type: document.getElementById('fixedType').value,
+                category: document.getElementById('fixedCategory').value,
+                amount: document.getElementById('fixedAmount').value,
+                dateStart: document.getElementById('fixedDateStart').value,
+                dateEnd: document.getElementById('fixedDateEnd').value,
+            };
         } else {
-            type = document.getElementById("variableType").value;
-            category = document.querySelector("#variableTab input[placeholder^='לדוגמה']").value;
-            amount = document.querySelector("#variableTab input[type='number']").value;
-            date = document.querySelector("#variableTab input[type='date']").value;
-            notes = document.querySelector("#variableTab textarea").value;
+            movement = {
+                type: document.getElementById('variableType').value,
+                category: document.getElementById('variableCategory').value,
+                amount: document.getElementById('variableAmount').value,
+                date: document.getElementById('variableDate').value,
+                notes: document.getElementById('variableNotes').value,
+            };
         }
 
-        if(!category || !amount || !date){
-            alert("אנא מלא את כל השדות החיוניים");
+        if(!movement.category || !movement.amount){
+            alert("אנא מלא את כל השדות");
             return;
         }
 
-        const movement = {type, category, amount, date, notes};
-
-        await addData("movements", movement); // פונקציה ב-api.js שמכניסה ל-Google Sheets
-        await loadMovements(); // רענון הרשימה
-
-        // ניקוי השדות לאחר שמירה
-        if(tab==='fixed'){
-            document.querySelector("#fixedTab input[placeholder^='לדוגמה']").value = "";
-            document.querySelector("#fixedTab input[type='number']").value = "";
-            document.querySelector("#fixedTab input[type='date']").value = "";
-            document.querySelector("#fixedTab input[type='date']:nth-of-type(2)").value = "";
-        } else {
-            document.querySelector("#variableTab input[placeholder^='לדוגמה']").value = "";
-            document.querySelector("#variableTab input[type='number']").value = "";
-            document.querySelector("#variableTab input[type='date']").value = "";
-            document.querySelector("#variableTab textarea").value = "";
-        }
-
+        await addData("movements", movement); // api.js
         alert("התנועה נשמרה בהצלחה!");
-    }catch(err){
+        loadMovements(); // טען מחדש את הרשימה
+    } catch(err){
         console.error("Error saving movement:", err);
     }
 }
 
-// ==== INITIAL LOAD ====
-window.onload = loadMovements;
+// ===== LOAD MOVEMENTS =====
+async function loadMovements(){
+    try{
+        const movements = await getData("movements");
+        const list = document.getElementById("movementsList");
+        list.innerHTML = "";
+        movements.forEach(m=>{
+            const div = document.createElement("div");
+            div.className = "movement-item " + m.type;
+            div.innerHTML = `<span>${m.category}</span><span>₪ ${m.amount}</span>`;
+            if(m.date) div.innerHTML += `<span>${m.date}</span>`;
+            if(m.notes) div.innerHTML += `<span>${m.notes}</span>`;
+            list.appendChild(div);
+        });
+    } catch(err){
+        console.error("Error loading movements:", err);
+    }
+}
+
+// ===== INITIAL LOAD =====
+window.onload = async function(){
+    await loadMovementCategories();
+    await loadMovements();
+};
